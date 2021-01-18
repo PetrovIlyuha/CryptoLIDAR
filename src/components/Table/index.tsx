@@ -31,7 +31,7 @@ export default function DataTable() {
     const {
       data: { Data: coinsData },
     } = await axios.get(
-      `https://min-api.cryptocompare.com/data/top/totalvolfull?limit=10&tsym=USD&api_key=d1b7f705ee5da3f3b96f281a2cb514623f20ac72260225fe195f606b2487eabf`,
+      `https://min-api.cryptocompare.com/data/top/totalvolfull?limit=10&tsym=USD&api_key=${process.env.REACT_APP_API_KEY}`,
     );
     return coinsData;
   };
