@@ -14,9 +14,8 @@ import CurrenciesList from './components/Table';
 const useStyles = makeStyles(theme => ({
   mainAppArea: {
     marginTop: '2rem',
-    height: '40vh',
+    height: '50vh',
   },
-  table: {},
 }));
 
 const App: React.FC = () => {
@@ -34,13 +33,12 @@ const App: React.FC = () => {
           spacing={3}
           justify='space-between'
           className={classes.mainAppArea}>
-          <Grid item md={7} lg={7}>
+          <Grid item md={8} lg={8}>
             <CurrenciesList />
-            {/* <Paper elevation={2} className={classes.table}>
-              Table of Currencies
-            </Paper> */}
           </Grid>
-          <Calculator />
+          <Grid item container md={4} lg={4} style={{ height: '50%' }}>
+            <Calculator />
+          </Grid>
         </Grid>
       </Grid>
     </Container>
