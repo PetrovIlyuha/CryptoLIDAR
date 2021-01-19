@@ -6,12 +6,19 @@ import { Box, Grid, makeStyles, Paper, Typography } from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
   exchangeArea: {
-    padding: '30% 20px',
+    padding: '15% 10px',
+    background:
+      'radial-gradient(100% 225% at 100% 0%, #FF0000 0%, #000000 100%), linear-gradient(236deg, #00C2FF 0%, #000000 100%), linear-gradient(135deg, #CDFFEB 0%, #CDFFEB 36%, #009F9D 36%, #009F9D 60%, #07456F 60%, #07456F 67%, #0F0A3C 67%, #0F0A3C 100%)',
+    backgroundBlendMode: 'overlay, hard-light, normal',
+    color: 'white',
   },
   calcHeader: {
     textAlign: 'center',
     fontFamily: 'Poppins',
-    marginBottom: 30,
+    backgroundColor: 'rgba(0,0,0,0.4)',
+    borderRadius: 10,
+    clipPath: 'polygon(15% 0, 100% 0, 85% 100%, 0% 100%)',
+    marginBottom: 15,
   },
   currencySelectorField: {
     '& .MuiFormHelperText-root': {
@@ -80,83 +87,85 @@ const Calculator = () => {
     setCurrencies({ ...currencies, [name]: event.target.value });
   };
   return (
-    <Grid item container md={5} lg={5}>
-      <Paper elevation={2} className={classes.exchangeArea}>
-        <Typography variant='h5' className={classes.calcHeader}>
-          Crypto Exchange Rates
-        </Typography>
-        <Grid item container spacing={2}>
-          <Grid item md={12}>
-            <Box className={classes.currencyHeaders}>
+    <Paper elevation={2} className={classes.exchangeArea}>
+      <Typography variant='h5' className={classes.calcHeader}>
+        Crypto Exchange Rates
+      </Typography>
+      <Grid item container spacing={2}>
+        <Grid item md={12}>
+          <Box className={classes.currencyHeaders}>
+            {!currency1 && (
               <Typography variant='body2' className={classes.currencyTitle}>
                 Choose Basis Currency{' '}
               </Typography>
-              <Typography variant='body1' className={classes.currencyTitle}>
-                {currency1 && `Selected: ${currency1}`}
-              </Typography>
-            </Box>
-          </Grid>
-          <Grid item md={8}>
-            <TextField
-              variant='filled'
-              label='Amount'
-              className={classes.amountInput}></TextField>
-          </Grid>
-          <Grid item md={4}>
-            <TextField
-              id='filled-select-currency'
-              select
-              label='Currency'
-              value={currency1}
-              onChange={handleChange('currency1')}
-              helperText='Select currency'
-              className={classes.currencySelectorField}
-              variant='filled'>
-              {data.map(option => (
-                <MenuItem key={option.value} value={option.value}>
-                  {option.label}
-                </MenuItem>
-              ))}
-            </TextField>
-          </Grid>
+            )}
+            <Typography variant='body1' className={classes.currencyTitle}>
+              {currency1 && `Selected: ${currency1}`}
+            </Typography>
+          </Box>
         </Grid>
-        <Grid item container spacing={2}>
-          <Grid item md={12}>
-            <Box className={classes.currencyHeaders}>
+        <Grid item md={7}>
+          <TextField
+            variant='filled'
+            label='Amount'
+            className={classes.amountInput}></TextField>
+        </Grid>
+        <Grid item md={5}>
+          <TextField
+            id='filled-select-currency'
+            select
+            label='Currency'
+            value={currency1}
+            onChange={handleChange('currency1')}
+            helperText='Select currency'
+            className={classes.currencySelectorField}
+            variant='filled'>
+            {data.map(option => (
+              <MenuItem key={option.value} value={option.value}>
+                {option.label}
+              </MenuItem>
+            ))}
+          </TextField>
+        </Grid>
+      </Grid>
+      <Grid item container spacing={2}>
+        <Grid item md={12}>
+          <Box className={classes.currencyHeaders}>
+            {!currency2 && (
               <Typography variant='body2' className={classes.currencyTitle}>
                 Choose Pair Currency{' '}
               </Typography>
-              <Typography variant='body1' className={classes.currencyTitle}>
-                {currency2 && `Selected: ${currency2}`}
-              </Typography>
-            </Box>
-          </Grid>
-          <Grid item md={8}>
-            <TextField
-              variant='filled'
-              label='Amount'
-              className={classes.amountInput}></TextField>
-          </Grid>
-          <Grid item md={4}>
-            <TextField
-              id='filled-select-currency'
-              select
-              label='Currency'
-              value={currency2}
-              className={classes.currencySelectorField}
-              onChange={handleChange('currency2')}
-              helperText='Select currency'
-              variant='filled'>
-              {data.map(option => (
-                <MenuItem key={option.value} value={option.value}>
-                  {option.label}
-                </MenuItem>
-              ))}
-            </TextField>
-          </Grid>
+            )}
+            <Typography variant='body1' className={classes.currencyTitle}>
+              {currency2 && `Selected: ${currency2}`}
+            </Typography>
+          </Box>
         </Grid>
-      </Paper>
-    </Grid>
+        <Grid item md={7}>
+          <TextField
+            variant='filled'
+            label='Amount'
+            className={classes.amountInput}></TextField>
+        </Grid>
+        <Grid item md={5}>
+          <TextField
+            id='filled-select-currency'
+            select
+            label='Currency'
+            value={currency2}
+            className={classes.currencySelectorField}
+            onChange={handleChange('currency2')}
+            helperText='Select currency'
+            variant='filled'>
+            {data.map(option => (
+              <MenuItem key={option.value} value={option.value}>
+                {option.label}
+              </MenuItem>
+            ))}
+          </TextField>
+        </Grid>
+      </Grid>
+    </Paper>
   );
 };
 
