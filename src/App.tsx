@@ -20,8 +20,6 @@ const App: React.FC = () => {
   const classes = useStyles();
   const [coins, setCoins] = React.useState<any>();
 
-  console.log(coins);
-
   const [rows, setRows] = React.useState<Coin[] | null>([]);
   const [currencies, setCurrencies] = React.useState<Currency[] | null>([]);
 
@@ -82,7 +80,7 @@ const App: React.FC = () => {
           justify='space-between'
           className={classes.mainAppArea}>
           <Grid item md={8} lg={8}>
-            <CurrenciesList coins={rows} />
+            <CurrenciesList />
           </Grid>
           <Grid item container md={4} lg={4} style={{ height: '50%' }}>
             <Calculator currencies={currencies} />
