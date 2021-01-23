@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import TextField from '@material-ui/core/TextField';
 import MenuItem from '@material-ui/core/MenuItem';
 import { Box, Grid, makeStyles, Paper, Typography } from '@material-ui/core';
@@ -86,16 +86,23 @@ const Calculator = ({ currencies }: CalcProps) => {
     };
   });
 
-  const defaultCoin1 = currencyData && currencyData[0];
-  const defaultCoin2 = currencyData && currencyData[1];
   const [selectedCurrency, setSelectedCurrency] = React.useState({
-    currency1: { ...defaultCoin2 },
-    currency2: { ...defaultCoin1 },
+    currency2: { value: '', label: '', price: 0 },
+    currency1: { value: '', label: '', price: 0 },
   });
   const [amount, setAmount] = React.useState({
     asset1: 0,
     asset2: 0,
   });
+
+  useEffect(() => {
+    if (currencyData) {
+      setSelectedCurrency({
+        currency1: currencyData[0],
+        currency2: currencyData[1],
+      });
+    }
+  }, []);
 
   const { currency1, currency2 } = selectedCurrency;
   const { asset1, asset2 } = amount;
@@ -113,6 +120,7 @@ const Calculator = ({ currencies }: CalcProps) => {
     e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>,
     asset: string,
   ) => {
+    if (+e.target.value < 0) return;
     if (asset === 'asset1') {
       let asset2Amount = +(
         (parseInt(e.target.value) * currency1.price) /
