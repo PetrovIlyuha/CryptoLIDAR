@@ -1,19 +1,55 @@
 import axios from 'axios';
-import { action, computed, makeAutoObservable, observable } from 'mobx';
+import { action, computed, observable, autorun } from 'mobx';
 import { Coin } from '../types';
 
+type AssetsPriceChanges = { [key: string]: string };
 class СurrencyStore {
   @observable private items: Coin[] = [];
+  @observable private diffAssets: AssetsPriceChanges;
 
   @computed
   get getCoins() {
     return this.items;
   }
 
+  @computed
+  get getDiffAssets() {
+    return this.diffAssets;
+  }
+
   @action
   setCoins = (items: Coin[]): void => {
-    this.items = items;
+    if (this.items.length > 0) {
+      this.diffAssets = this.diffCurrencies(items, this.items).reduce(
+        (acc: AssetsPriceChanges, newChanges: Coin) => {
+          const oldCoin: Coin = this.items.find(
+            coin => coin.coinName === newChanges.coinName,
+          )!;
+          const changeDetection: string =
+            newChanges.lastPrice === oldCoin.lastPrice
+              ? 'stale'
+              : newChanges.lastPrice > oldCoin.lastPrice
+              ? 'rising'
+              : 'falling';
+          acc[newChanges.coinName] = changeDetection;
+          return acc;
+        },
+        {},
+      );
+      this.items = items;
+      setTimeout(() => {
+        this.diffAssets = {};
+      }, 15000);
+    } else {
+      this.items = items;
+    }
   };
+
+  diffCurrencies(newCoins: Coin[], oldCoins: Coin[]) {
+    return newCoins.filter(
+      (coin, idx) => coin.lastPrice !== oldCoins[idx].lastPrice,
+    );
+  }
 
   @action
   getCryptoData = async () => {
@@ -32,7 +68,7 @@ class СurrencyStore {
             dailyChange: coin.RAW.USD.CHANGE24HOUR,
           };
         });
-        this.items = coins;
+        this.setCoins(coins);
       });
   };
 }
